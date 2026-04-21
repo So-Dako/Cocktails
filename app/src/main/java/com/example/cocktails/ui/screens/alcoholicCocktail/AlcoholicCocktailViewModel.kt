@@ -6,14 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.cocktails.network.CocktailApi
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.*
+import com.example.cocktails.network.AlcoholicCocktail
 
 sealed interface AlcoholicCocktailUiState {
-    data class Success(val alcoholic: String): AlcoholicCocktailUiState
+    data class Success(val alcoholicCocktailList: List<AlcoholicCocktail>): AlcoholicCocktailUiState
     object Loading: AlcoholicCocktailUiState
     object Error: AlcoholicCocktailUiState
 }
 
-class CocktailViewModel: ViewModel(){
+class AlcoholicCocktailViewModel: ViewModel(){
 
     var alcoholicCocktailUiState: AlcoholicCocktailUiState by mutableStateOf(AlcoholicCocktailUiState.Loading)
     private set
@@ -27,7 +28,7 @@ class CocktailViewModel: ViewModel(){
             alcoholicCocktailUiState = try {
                 val alcoholic = CocktailApi.retrofitService.getAlcoholic()
                 val listResult = alcoholic.drinks
-                AlcoholicCocktailUiState.Success(listResult[0].strDrink)
+                AlcoholicCocktailUiState.Success(listResult)
             } catch (e: Exception) {
                 AlcoholicCocktailUiState.Error
             }
