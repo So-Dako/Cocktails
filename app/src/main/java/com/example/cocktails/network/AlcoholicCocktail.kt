@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DrinksList(
+data class AlcoholicCocktailList(
     @SerialName("drinks")
-    val drinks: List<AlcoholicDrinks>
+    val drinks: List<AlcoholicCocktail>
 )
 
 @Serializable
-data class AlcoholicDrinks(
+data class AlcoholicCocktail(
     @SerialName("strDrink")
     val strDrink: String,
     @SerialName("strDrinkThumb")
