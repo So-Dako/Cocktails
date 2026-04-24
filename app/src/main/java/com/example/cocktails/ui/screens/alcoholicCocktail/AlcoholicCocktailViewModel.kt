@@ -1,12 +1,14 @@
-package com.example.cocktails.ui.screens
+package com.example.cocktails.ui.screens.alcoholicCocktail
 
+import android.app.Application
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cocktails.network.AlcoholicCocktail
 import com.example.cocktails.network.CocktailApi
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.*
-import com.example.cocktails.network.AlcoholicCocktail
 
 sealed interface AlcoholicCocktailUiState {
     data class Success(val alcoholicCocktailList: List<AlcoholicCocktail>): AlcoholicCocktailUiState
@@ -14,19 +16,19 @@ sealed interface AlcoholicCocktailUiState {
     object Error: AlcoholicCocktailUiState
 }
 
-class AlcoholicCocktailViewModel: ViewModel(){
+class AlcoholicCocktailViewModel(application: Application): AndroidViewModel(application){
 
     var alcoholicCocktailUiState: AlcoholicCocktailUiState by mutableStateOf(AlcoholicCocktailUiState.Loading)
     private set
 
-    init{
+    init {
         getAlcoholicCocktails()
     }
 
-    private fun getAlcoholicCocktails(){
+    fun getAlcoholicCocktails(){
         viewModelScope.launch {
             alcoholicCocktailUiState = try {
-                val alcoholic = CocktailApi.retrofitService.getAlcoholic()
+                val alcoholic = CocktailApi.getRetrofitService(getApplication()).getAlcoholic()
                 val listResult = alcoholic.drinks
                 AlcoholicCocktailUiState.Success(listResult)
             } catch (e: Exception) {

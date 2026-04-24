@@ -1,9 +1,10 @@
-package com.example.cocktails.ui.screens
+package com.example.cocktails.ui.screens.nonAlcoholocCocktail
 
+import android.app.Application
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import com.example.cocktails.network.NonAlcoholicCocktailList
-import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktails.network.CocktailApi
 import com.example.cocktails.network.NonAlcoholicCocktail
@@ -16,20 +17,20 @@ sealed interface NonAlcoholicCocktailUiState{
     object Error: NonAlcoholicCocktailUiState
 }
 
-class NonAlcoholicCocktailViewModel : ViewModel(){
+class NonAlcoholicCocktailViewModel(application: Application) : AndroidViewModel(application){
 
     var nonAlcoholicCocktailUiState: NonAlcoholicCocktailUiState by mutableStateOf(
         NonAlcoholicCocktailUiState.Loading)
         private set
 
-    init {
+    init{
         getNonAlcoholicCocktails()
     }
 
-    private fun getNonAlcoholicCocktails() {
+    fun getNonAlcoholicCocktails() {
         viewModelScope.launch {
             nonAlcoholicCocktailUiState = try {
-                val nonAlcoholic = CocktailApi.retrofitService.getNonAlcoholic()
+                val nonAlcoholic = CocktailApi.getRetrofitService(getApplication()).getNonAlcoholic()
                 val listResult = nonAlcoholic.drinks
                 NonAlcoholicCocktailUiState.Success(listResult)
             } catch (e: Exception) {
