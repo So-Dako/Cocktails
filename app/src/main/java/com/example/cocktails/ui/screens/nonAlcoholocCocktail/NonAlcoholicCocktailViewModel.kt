@@ -8,11 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktails.network.CocktailApiService
 import com.example.cocktails.network.NonAlcoholicCocktail
+import com.example.cocktails.network.OkHttpClientManager
 import com.example.cocktails.network.getRetrofit
-import com.example.cocktails.network.isNetworkAvailable
 import kotlinx.coroutines.launch
-import okhttp3.Cache
-import okhttp3.OkHttpClient
 
 
 sealed interface NonAlcoholicCocktailUiState{
@@ -29,29 +27,9 @@ class NonAlcoholicCocktailViewModel(application: Application) : AndroidViewModel
 
     private val context = getApplication<Application>()
 
-    val cache = Cache(context.cacheDir, 10 * 1024 * 1024)
-
-    val okHttpClient = OkHttpClient.Builder()
-        .cache(cache)
-        .addInterceptor { chain ->
-            var request = chain.request()
-            if (!isNetworkAvailable(context)) {
-                request = request.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached, max-state=604800")
-                    .build()
-            }
-            chain.proceed(request)
-        }
-        .addNetworkInterceptor { chain ->
-            val response = chain.proceed(chain.request())
-            response.newBuilder()
-                .header("Cache-control", "public, max-age=600")
-                .build()
-        }
-        .build()
-
-    private val retrofitService : CocktailApiService by lazy {
-        getRetrofit(okHttpClient).create(CocktailApiService::class.java)
+    val retrofitService: CocktailApiService by lazy {
+        getRetrofit(OkHttpClientManager.getOkHttpClient(context))
+            .create(CocktailApiService::class.java)
     }
 
     init{

@@ -1,5 +1,6 @@
 package com.example.cocktails.ui.screens.alcoholicCocktail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import com.example.cocktails.network.AlcoholicCocktail
 import com.example.cocktails.ui.elements.CocktailCard
 import com.example.cocktails.ui.screens.ErrorScreen
 import com.example.cocktails.ui.screens.LoadingScreen
+import com.example.cocktails.ui.screens.cocktailDetails.CocktailDetailsViewModel
 
 @Composable
 fun AlcoholicCocktailsScreen(alcoholicCocktailUiState: AlcoholicCocktailUiState,
@@ -35,13 +37,23 @@ fun AlcoholicCocktailsScreen(alcoholicCocktailUiState: AlcoholicCocktailUiState,
 
 @Composable
 fun ResultScreen(alcoholicCocktailUiState: List<AlcoholicCocktail>, modifier: Modifier = Modifier) {
+    val cocktailDetailsViewModel: CocktailDetailsViewModel = viewModel()
+    var cocktailId: String = ""
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
         items(alcoholicCocktailUiState) { item ->
-            CocktailCard(item, modifier = modifier.fillMaxSize())
+            CocktailCard(
+                item,
+                modifier = modifier
+                    .fillMaxSize()
+                    .clickable(
+                        enabled = true,
+                        onClick = { cocktailId = item.idDrink }
+                    )
+            )
         }
     }
 }
