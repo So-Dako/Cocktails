@@ -10,15 +10,15 @@ object OkHttpClientManager {
 
         return OkHttpClient.Builder()
             .cache(cache)
-            .addInterceptor { chain ->
+            /*.addInterceptor { chain ->
                 var request = chain.request()
                 if (!isNetworkAvailable(context)) {
                     request = request.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-state=604800")
+                        .header("Cache-Control", "public, only-if-cached, max-stale=604800")
                         .build()
                 }
                 chain.proceed(request)
-            }
+            }*/
             .addNetworkInterceptor { chain ->
                 val response = chain.proceed(chain.request())
                 response.newBuilder()

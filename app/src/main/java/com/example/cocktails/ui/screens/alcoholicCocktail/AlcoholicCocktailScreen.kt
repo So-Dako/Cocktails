@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cocktails.navigation.Screens
 import com.example.cocktails.network.AlcoholicCocktail
 import com.example.cocktails.ui.elements.CocktailCard
 import com.example.cocktails.ui.screens.ErrorScreen
@@ -19,26 +20,31 @@ import com.example.cocktails.ui.screens.cocktailDetails.CocktailDetailsViewModel
 
 @Composable
 fun AlcoholicCocktailsScreen(alcoholicCocktailUiState: AlcoholicCocktailUiState,
+                             onRetry: () -> Unit,
+                             onNavigate: (Screens) -> Unit,
                              modifier: Modifier = Modifier
 ) {
-    val alcoholicCocktailViewModel: AlcoholicCocktailViewModel = viewModel()
     when (alcoholicCocktailUiState) {
         is AlcoholicCocktailUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
         is AlcoholicCocktailUiState.Success -> ResultScreen(
             alcoholicCocktailUiState.alcoholicCocktailList,
+            onNavigate = onNavigate,
             modifier = modifier.fillMaxSize()
         )
         is AlcoholicCocktailUiState.Error -> ErrorScreen(
             modifier = modifier.fillMaxSize(),
-            onRetry = {alcoholicCocktailViewModel.getAlcoholicCocktails()}
+            onRetry = onRetry
             )
     }
 }
 
 @Composable
-fun ResultScreen(alcoholicCocktailUiState: List<AlcoholicCocktail>, modifier: Modifier = Modifier) {
+fun ResultScreen(
+    alcoholicCocktailUiState: List<AlcoholicCocktail>,
+    onNavigate: (Screens) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val cocktailDetailsViewModel: CocktailDetailsViewModel = viewModel()
-    var cocktailId: String = ""
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -51,7 +57,7 @@ fun ResultScreen(alcoholicCocktailUiState: List<AlcoholicCocktail>, modifier: Mo
                     .fillMaxSize()
                     .clickable(
                         enabled = true,
-                        onClick = { cocktailId = item.idDrink }
+                        onClick = { onNavigate(Screens.CocktailDetail(item.idDrink)) }
                     )
             )
         }

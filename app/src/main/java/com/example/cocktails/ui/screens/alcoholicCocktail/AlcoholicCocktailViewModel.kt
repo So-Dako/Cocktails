@@ -25,13 +25,13 @@ class AlcoholicCocktailViewModel(application: Application): AndroidViewModel(app
 
     val context = getApplication<Application>()
 
-    init {
-        getAlcoholicCocktails()
-    }
-
     val retrofitService: CocktailApiService by lazy {
         getRetrofit(OkHttpClientManager.getOkHttpClient(context))
             .create(CocktailApiService::class.java)
+    }
+
+    init {
+        getAlcoholicCocktails()
     }
 
     fun getAlcoholicCocktails(){

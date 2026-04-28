@@ -7,13 +7,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktails.network.CocktailApiService
-import com.example.cocktails.network.Drink
+import com.example.cocktails.network.CocktailDetails
 import com.example.cocktails.network.OkHttpClientManager
 import com.example.cocktails.network.getRetrofit
 import kotlinx.coroutines.launch
 
 sealed interface CocktailDetailUiState {
-    data class Success(val cocktailDetails: Drink): CocktailDetailUiState
+    data class Success(val cocktailDetails: CocktailDetails): CocktailDetailUiState
     object Loading: CocktailDetailUiState
     object Error: CocktailDetailUiState
 
@@ -26,7 +26,6 @@ class CocktailDetailsViewModel(application: Application): AndroidViewModel(appli
 
     val context = getApplication<Application>()
 
-
     val retrofitService: CocktailApiService by lazy {
         getRetrofit(OkHttpClientManager.getOkHttpClient(context))
             .create(CocktailApiService::class.java)
@@ -35,7 +34,7 @@ class CocktailDetailsViewModel(application: Application): AndroidViewModel(appli
     fun getDrinkDetails(id: String){
         viewModelScope.launch() {
             cocktailDetailUiState = try {
-                val detail = retrofitService.getDrinkDetail(id)
+                val detail = retrofitService.getDrinkDetail(id).drink.first()
                 CocktailDetailUiState.Success(detail)
             } catch (e: Exception){
                 CocktailDetailUiState.Error

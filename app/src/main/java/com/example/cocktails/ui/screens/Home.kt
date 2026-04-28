@@ -22,6 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation3.runtime.NavKey
+import com.example.cocktails.navigation.Screens
 import com.example.cocktails.ui.screens.alcoholicCocktail.AlcoholicCocktailViewModel
 import com.example.cocktails.ui.screens.alcoholicCocktail.AlcoholicCocktailsScreen
 import com.example.cocktails.ui.screens.nonAlcoholocCocktail.NonAlcoholicCocktailViewModel
@@ -35,7 +37,10 @@ data class TabItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CocktailApp(modifier: Modifier = Modifier) {
+fun Home(
+    onNavigate: (Screens) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabItems = listOf(
         TabItem(
@@ -78,10 +83,17 @@ fun CocktailApp(modifier: Modifier = Modifier) {
         Column(modifier = modifier.padding(innerPadding)) {
             if (selectedTab == 0) {
                 val alcoholicCocktailViewModel: AlcoholicCocktailViewModel = viewModel()
-                AlcoholicCocktailsScreen(alcoholicCocktailUiState = alcoholicCocktailViewModel.alcoholicCocktailUiState)
+                AlcoholicCocktailsScreen(
+                    alcoholicCocktailUiState = alcoholicCocktailViewModel.alcoholicCocktailUiState,
+                    onRetry = { alcoholicCocktailViewModel.getAlcoholicCocktails() },
+                    onNavigate = onNavigate
+                )
             } else {
                 val nonAlcoholicCocktailViewModel: NonAlcoholicCocktailViewModel = viewModel()
-                NonAlcoholicCocktailsScreen(nonAlcoholicCocktailUiState = nonAlcoholicCocktailViewModel.nonAlcoholicCocktailUiState)
+                NonAlcoholicCocktailsScreen(
+                    nonAlcoholicCocktailUiState = nonAlcoholicCocktailViewModel.nonAlcoholicCocktailUiState,
+                    onRetry = { nonAlcoholicCocktailViewModel.getNonAlcoholicCocktails() },
+                onNavigate = onNavigate)
             }
         }
     }
