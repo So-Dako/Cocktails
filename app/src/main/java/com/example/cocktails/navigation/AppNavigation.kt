@@ -9,6 +9,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.cocktails.ui.screens.Home
 import com.example.cocktails.ui.screens.cocktailDetails.CocktailDetailScreen
 import com.example.cocktails.ui.screens.cocktailDetails.CocktailDetailsViewModel
+import com.example.cocktails.ui.screens.ingredient.IngredientScreen
+import com.example.cocktails.ui.screens.ingredient.IngredientViewModel
 
 @Composable
 fun AppNavigation(backStack: SnapshotStateList<Screens>) {
@@ -24,8 +26,19 @@ fun AppNavigation(backStack: SnapshotStateList<Screens>) {
                 }
                 CocktailDetailScreen(
                     cocktailDetailsViewModel.cocktailDetailUiState,
-                    key.drinkId
+                    key.drinkId,
+                    onNavigate = {key -> backStack.add(key)}
                 )
+            }
+            entry<Screens.IngredientInfo> { key ->
+                val ingredientViewModel: IngredientViewModel = viewModel()
+                LaunchedEffect(key.ingredient) {
+                    ingredientViewModel.getCocktails(key.ingredient)
+                }
+                IngredientScreen(
+                    ingredientViewModel.ingredientUiState,
+                    ingredient = key.ingredient
+                    )
             }
         }
     )

@@ -8,4 +8,6 @@ sealed interface Screens: NavKey {
     data object Home: Screens
     @Serializable
     data class CocktailDetail(val drinkId: String): Screens
+    @Serializable
+    data class IngredientInfo(val ingredient: String): Screens
 }

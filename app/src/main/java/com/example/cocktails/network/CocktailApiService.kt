@@ -27,6 +27,8 @@ interface CocktailApiService{
     suspend fun getNonAlcoholic(): NonAlcoholicCocktailList
     @GET("lookup.php")
     suspend fun getDrinkDetail(@Query("i") idDrink: String): Drink
+    @GET("filter.php")
+    suspend fun getDrinksByIngredient(@Query("i") ingredient: String): CocktailList
 }
 
 object CocktailApi {}
