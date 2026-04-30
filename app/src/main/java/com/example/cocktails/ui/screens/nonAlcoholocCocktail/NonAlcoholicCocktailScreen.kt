@@ -46,7 +46,7 @@ fun ResultScreen(
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(nonAlcoholicCocktailUiState) { item ->
             CocktailCard(

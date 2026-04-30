@@ -25,8 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.R
@@ -72,14 +75,13 @@ fun ResultScreen (
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = ingredient) },
+                title = {  },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
-
                     }
                 }
             )
@@ -94,7 +96,7 @@ fun ResultScreen (
             GlideImage(
                 imageModel = { "https://www.thecocktaildb.com/images/ingredients/$ingredient.png" },
                 modifier = modifier
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
                     .fillMaxWidth()
                     .aspectRatio(1f),
                 requestOptions = {
@@ -116,9 +118,14 @@ fun ResultScreen (
             )
             Text(
                 text = ingredient,
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
                 modifier = modifier
-                    .padding(8.dp))
+                    .padding(8.dp)
+            )
             cocktailList.chunked(2).forEach { rowItems ->
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -130,6 +137,7 @@ fun ResultScreen (
                         CocktailCard(
                             item,
                             modifier = Modifier
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
                                 .weight(1f)
                                 .clickable(
                                     onClick = { onNavigate(Screens.CocktailDetail(item.idDrink)) }

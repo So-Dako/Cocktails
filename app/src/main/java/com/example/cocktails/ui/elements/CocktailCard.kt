@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,14 +28,15 @@ import com.skydoves.landscapist.glide.GlideImage
 @Composable
 fun CocktailCard(cocktail: Cocktail, modifier: Modifier = Modifier) {
     Card(colors = CardDefaults.cardColors(
-        containerColor = Color.Transparent
+        containerColor = Color.Transparent,
     ),
-        shape = RectangleShape
+        shape = RectangleShape,
+        modifier = modifier
     )
     {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = Modifier.fillMaxWidth()
         ) {
             GlideImage(
                 imageModel = { cocktail.strDrinkThumb },
@@ -61,7 +63,7 @@ fun CocktailCard(cocktail: Cocktail, modifier: Modifier = Modifier) {
             Text(
                 text = cocktail.strDrink,
                 textAlign = TextAlign.Center,
-                modifier = modifier
+                modifier = Modifier.padding(top = 4.dp)
             )
         }
     }

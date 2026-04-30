@@ -21,12 +21,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -72,14 +77,13 @@ fun ResultScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = cocktailDetail.strDrink) },
+                title = {  },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
-
                     }
                 }
             )
@@ -94,7 +98,7 @@ fun ResultScreen(
             GlideImage(
                 imageModel = {cocktailDetail.strDrinkThumb},
                 modifier = modifier
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
                     .fillMaxWidth()
                     .aspectRatio(1f),
                 requestOptions = {
@@ -116,12 +120,21 @@ fun ResultScreen(
             )
             Text(
                 text = cocktailDetail.strDrink,
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
                 modifier = modifier
-                    .padding(8.dp))
+                    .padding(8.dp)
+                )
             Text(
                 text = "Ingredients",
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
                 modifier = modifier.padding(8.dp)
             )
             pairs.chunked(3).forEach { rowItems ->
@@ -149,7 +162,11 @@ fun ResultScreen(
             }
             Text(
                 text = "Instructions",
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
                 modifier = modifier.padding(8.dp)
             )
             Text(
@@ -159,7 +176,11 @@ fun ResultScreen(
             )
             Text(
                 text = "Glass",
-                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
                 modifier = modifier.padding(8.dp)
             )
             Text(

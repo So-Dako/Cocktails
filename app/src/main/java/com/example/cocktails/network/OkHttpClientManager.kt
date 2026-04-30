@@ -1,6 +1,7 @@
 package com.example.cocktails.network
 
 import android.content.Context
+import android.util.Log
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 
