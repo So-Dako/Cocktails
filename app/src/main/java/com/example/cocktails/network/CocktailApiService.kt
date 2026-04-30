@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val BASE_URL = "https://thecocktaildb.com/api/json/v1/1/"
+private const val BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/"
 
 private val json = Json { ignoreUnknownKeys = true }
 
@@ -21,10 +21,10 @@ fun getRetrofit(client: OkHttpClient): Retrofit {
 }
 
 interface CocktailApiService{
-    @GET("filter.php?a=Alcoholic")
-    suspend fun getAlcoholic(): AlcoholicCocktailList
-    @GET("filter.php?a=Non_Alcoholic")
-    suspend fun getNonAlcoholic(): NonAlcoholicCocktailList
+    @GET("filter.php")
+    suspend fun getAlcoholic(@Query("a") alcoholic: String = "Alcoholic"): AlcoholicCocktailList
+    @GET("filter.php")
+    suspend fun getNonAlcoholic(@Query("a") alcoholic: String = "Non_Alcoholic"): NonAlcoholicCocktailList
     @GET("lookup.php")
     suspend fun getDrinkDetail(@Query("i") idDrink: String): Drink
     @GET("filter.php")

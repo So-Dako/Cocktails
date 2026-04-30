@@ -1,6 +1,6 @@
 package com.example.cocktails.ui.screens
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -76,7 +76,7 @@ fun Home(
             }
         }
     ) { innerPadding ->
-        Column(modifier = modifier.padding(innerPadding)) {
+        Box(modifier = modifier.padding(innerPadding)) {
             if (navigationViewModel.selectedTab == 0) {
                 val alcoholicCocktailViewModel: AlcoholicCocktailViewModel = viewModel()
                 AlcoholicCocktailsScreen(

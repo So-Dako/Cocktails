@@ -38,7 +38,8 @@ fun AppNavigation(backStack: SnapshotStateList<Screens>) {
                 CocktailDetailScreen(
                     cocktailDetailsViewModel.cocktailDetailUiState,
                     key.drinkId,
-                    onNavigate = {key -> backStack.add(key)}
+                    onNavigate = {key -> backStack.add(key)},
+                    onBack = { backStack.removeLastOrNull() }
                 )
             }
             entry<Screens.IngredientInfo> { key ->
@@ -49,7 +50,9 @@ fun AppNavigation(backStack: SnapshotStateList<Screens>) {
                 IngredientScreen(
                     ingredientViewModel.ingredientUiState,
                     onNavigate = {key -> backStack.add(key)},
-                    ingredient = key.ingredient
+                    ingredient = key.ingredient,
+                    onBack = { backStack.removeLastOrNull() },
+                    onRetry = { ingredientViewModel.getCocktails(key.ingredient) }
                     )
             }
         }

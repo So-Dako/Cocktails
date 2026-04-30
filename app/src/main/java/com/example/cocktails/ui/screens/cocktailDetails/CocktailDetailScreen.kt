@@ -13,8 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,12 +42,14 @@ import com.skydoves.landscapist.glide.GlideImage
 fun CocktailDetailScreen(cocktailDetailUiState: CocktailDetailUiState,
                          cocktailId: String,
                          onNavigate: (Screens) -> Unit,
+                         onBack: () -> Unit,
                          modifier: Modifier = Modifier){
     val cocktailDetailsViewModel: CocktailDetailsViewModel = viewModel()
     when(cocktailDetailUiState) {
         is CocktailDetailUiState.Loading -> LoadingScreen()
         is CocktailDetailUiState.Success -> ResultScreen(
             cocktailDetail = cocktailDetailUiState.cocktailDetails,
+            onBack = onBack,
             onNavigate = onNavigate
             )
         is CocktailDetailUiState.Error -> ErrorScreen( onRetry = {
@@ -50,16 +58,33 @@ fun CocktailDetailScreen(cocktailDetailUiState: CocktailDetailUiState,
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(
     cocktailDetail: CocktailDetails,
     onNavigate: (Screens) -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val pairs = cocktailDetail.getListOfMeasures()
         .zip(cocktailDetail.getListOfIngredients())
 
-    Scaffold(){ innerPadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = cocktailDetail.strDrink) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+
+                    }
+                }
+            )
+        }
+    ){ innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)

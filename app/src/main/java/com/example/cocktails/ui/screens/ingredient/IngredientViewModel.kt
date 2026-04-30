@@ -36,7 +36,7 @@ class IngredientViewModel(application: Application) : AndroidViewModel(applicati
             ingredientUiState = try {
                 val cocktails = retrofitService.getDrinksByIngredient(ingredient)
                 val listResult = cocktails.drinks
-                    IngredientUiState.Success(listResult)
+                IngredientUiState.Success(listResult)
             } catch (e: Exception) {
                 IngredientUiState.Error
             }
