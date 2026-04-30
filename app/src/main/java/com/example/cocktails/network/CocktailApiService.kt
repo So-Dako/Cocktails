@@ -22,9 +22,9 @@ fun getRetrofit(client: OkHttpClient): Retrofit {
 
 interface CocktailApiService{
     @GET("filter.php")
-    suspend fun getAlcoholic(@Query("a") alcoholic: String = "Alcoholic"): AlcoholicCocktailList
+    suspend fun getAlcoholic(@Query("a") alcoholic: String = "Alcoholic"): CocktailList
     @GET("filter.php")
-    suspend fun getNonAlcoholic(@Query("a") alcoholic: String = "Non_Alcoholic"): NonAlcoholicCocktailList
+    suspend fun getNonAlcoholic(@Query("a") alcoholic: String = "Non_Alcoholic"): CocktailList
     @GET("lookup.php")
     suspend fun getDrinkDetail(@Query("i") idDrink: String): Drink
     @GET("filter.php")

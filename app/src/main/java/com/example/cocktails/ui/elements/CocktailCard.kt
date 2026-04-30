@@ -21,53 +21,24 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.R
-import com.example.cocktails.network.AlcoholicCocktail
 import com.example.cocktails.network.Cocktail
-import com.example.cocktails.network.NonAlcoholicCocktail
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun CocktailCard(alcoholicCocktail: AlcoholicCocktail, modifier: Modifier = Modifier) {
+fun CocktailCard(cocktail: Cocktail, modifier: Modifier = Modifier) {
     Card(colors = CardDefaults.cardColors(
         containerColor = Color.Transparent
     ),
         shape = RectangleShape
-        ) {
+    )
+    {
         Column(
-            modifier = modifier.fillMaxSize()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
         ) {
             GlideImage(
-                imageModel = {alcoholicCocktail.strDrinkThumb},
-                modifier = modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                requestOptions = {
-                    RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .error(R.drawable.ic_connection_error)
-                }
-            )
-            Text(
-                text = alcoholicCocktail.strDrink,
-                textAlign = TextAlign.Center,
-                modifier = modifier)
-        }
-    }
-}
-
-@Composable
-fun CocktailCard(nonAlcoholicCocktail: NonAlcoholicCocktail, modifier: Modifier = Modifier) {
-    Card(colors = CardDefaults.cardColors(
-        containerColor = Color.Transparent
-    ),
-        shape = RectangleShape
-    ) {
-        Column(
-            modifier = modifier.fillMaxSize()
-        ) {
-            GlideImage(
-                imageModel = {nonAlcoholicCocktail.strDrinkThumb},
-                modifier = modifier
+                imageModel = { cocktail.strDrinkThumb },
+                modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f),
                 requestOptions = {
@@ -82,50 +53,16 @@ fun CocktailCard(nonAlcoholicCocktail: NonAlcoholicCocktail, modifier: Modifier 
                         Image(
                             painter = painterResource(R.drawable.ic_connection_error),
                             contentDescription = null,
-                            modifier = Modifier.size(100.dp)
+                            modifier = Modifier.size(50.dp)
                         )
                     }
                 }
             )
             Text(
-                text = nonAlcoholicCocktail.strDrink,
+                text = cocktail.strDrink,
                 textAlign = TextAlign.Center,
-                modifier = modifier)
+                modifier = modifier
+            )
         }
-    }
-}
-
-@Composable
-fun CocktailCard(cocktail: Cocktail, modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        GlideImage(
-            imageModel = { cocktail.strDrinkThumb },
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f),
-            requestOptions = {
-                RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-            },
-            failure = {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_connection_error),
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp)
-                    )
-                }
-            }
-        )
-        Text(
-            text = cocktail.strDrink,
-            textAlign = TextAlign.Center
-        )
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.cocktails.navigation.Screens
-import com.example.cocktails.network.NonAlcoholicCocktail
+import com.example.cocktails.network.Cocktail
 import com.example.cocktails.ui.elements.CocktailCard
 import com.example.cocktails.ui.screens.ErrorScreen
 import com.example.cocktails.ui.screens.LoadingScreen
@@ -39,7 +39,7 @@ fun NonAlcoholicCocktailsScreen(
 
 @Composable
 fun ResultScreen(
-    nonAlcoholicCocktailUiState: List<NonAlcoholicCocktail>,
+    nonAlcoholicCocktailUiState: List<Cocktail>,
     onNavigate: (Screens) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -50,7 +50,7 @@ fun ResultScreen(
     ) {
         items(nonAlcoholicCocktailUiState) { item ->
             CocktailCard(
-                nonAlcoholicCocktail = item,
+                cocktail = item,
                 modifier = modifier
                     .fillMaxSize()
                     .clickable(

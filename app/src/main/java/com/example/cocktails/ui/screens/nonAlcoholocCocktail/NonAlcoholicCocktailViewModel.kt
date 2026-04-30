@@ -6,15 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cocktails.network.Cocktail
 import com.example.cocktails.network.CocktailApiService
-import com.example.cocktails.network.NonAlcoholicCocktail
 import com.example.cocktails.network.OkHttpClientManager
 import com.example.cocktails.network.getRetrofit
 import kotlinx.coroutines.launch
 
 
 sealed interface NonAlcoholicCocktailUiState{
-    data class Success(val nonAlcoholicCocktailList: List<NonAlcoholicCocktail>): NonAlcoholicCocktailUiState
+    data class Success(val nonAlcoholicCocktailList: List<Cocktail>): NonAlcoholicCocktailUiState
     object Loading: NonAlcoholicCocktailUiState
     object Error: NonAlcoholicCocktailUiState
 }
