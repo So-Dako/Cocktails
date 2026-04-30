@@ -77,19 +77,23 @@ fun Home(
         }
     ) { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
+            val navigationViewModel: NavigationViewModel = viewModel()
             if (navigationViewModel.selectedTab == 0) {
                 val alcoholicCocktailViewModel: AlcoholicCocktailViewModel = viewModel()
                 AlcoholicCocktailsScreen(
                     alcoholicCocktailUiState = alcoholicCocktailViewModel.alcoholicCocktailUiState,
                     onRetry = { alcoholicCocktailViewModel.getAlcoholicCocktails() },
-                    onNavigate = onNavigate
+                    onNavigate = onNavigate,
+                    gridState = navigationViewModel.alcoholicCocktailGridState
                 )
             } else {
                 val nonAlcoholicCocktailViewModel: NonAlcoholicCocktailViewModel = viewModel()
                 NonAlcoholicCocktailsScreen(
                     nonAlcoholicCocktailUiState = nonAlcoholicCocktailViewModel.nonAlcoholicCocktailUiState,
                     onRetry = { nonAlcoholicCocktailViewModel.getNonAlcoholicCocktails() },
-                onNavigate = onNavigate)
+                    onNavigate = onNavigate,
+                    gridState = navigationViewModel.nonAlcoholicCocktailGridState
+                )
             }
         }
     }

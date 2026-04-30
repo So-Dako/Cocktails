@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import com.example.cocktails.ui.screens.LoadingScreen
 @Composable
 fun NonAlcoholicCocktailsScreen(
     nonAlcoholicCocktailUiState: NonAlcoholicCocktailUiState,
+    gridState: LazyGridState,
     onRetry: () -> Unit,
     onNavigate: (Screens) -> Unit,
     modifier: Modifier = Modifier
@@ -28,6 +30,7 @@ fun NonAlcoholicCocktailsScreen(
         is NonAlcoholicCocktailUiState.Success -> ResultScreen(
             nonAlcoholicCocktailUiState.nonAlcoholicCocktailList,
             onNavigate = onNavigate,
+            gridState = gridState,
             modifier = modifier.fillMaxSize()
         )
         is NonAlcoholicCocktailUiState.Error -> ErrorScreen(
@@ -41,9 +44,12 @@ fun NonAlcoholicCocktailsScreen(
 fun ResultScreen(
     nonAlcoholicCocktailUiState: List<Cocktail>,
     onNavigate: (Screens) -> Unit,
+    gridState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(columns = GridCells.Fixed(2),
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = gridState,
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

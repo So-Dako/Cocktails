@@ -1,5 +1,6 @@
 package com.example.cocktails.navigation
 
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -15,4 +16,8 @@ class NavigationViewModel(): ViewModel() {
     fun selectTab(index: Int) {
         selectedTab = index
     }
+
+    val alcoholicCocktailGridState = LazyGridState()
+
+    val nonAlcoholicCocktailGridState = LazyGridState()
 }
