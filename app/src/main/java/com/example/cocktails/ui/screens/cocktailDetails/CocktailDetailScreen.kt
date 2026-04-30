@@ -107,19 +107,15 @@ fun ResultScreen(
                         .padding(8.dp)
                 ) {
                     rowItems.forEach { (measure, ingredient) ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.weight(1f)
-
-                        ) {
                             IngredientCard(
                                 ingredient = ingredient,
                                 measure = measure,
-                                modifier = modifier.clickable(
+                                modifier = modifier
+                                    .clickable(
                                     onClick = { onNavigate(Screens.IngredientInfo(ingredient)) }
                                 )
+                                    .weight(1f)
                             )
-                        }
                     }
                     repeat(3 - rowItems.size) {
                         Box(modifier = Modifier.weight(1f))

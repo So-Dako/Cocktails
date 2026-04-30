@@ -1,6 +1,7 @@
 package com.example.cocktails.ui.screens.ingredient
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.R
+import com.example.cocktails.navigation.Screens
 import com.example.cocktails.network.Cocktail
+import com.example.cocktails.ui.elements.CocktailCard
 import com.example.cocktails.ui.screens.ErrorScreen
 import com.example.cocktails.ui.screens.LoadingScreen
 import com.skydoves.landscapist.glide.GlideImage
@@ -33,6 +36,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun IngredientScreen(
     ingredientUiState: IngredientUiState,
     ingredient: String,
+    onNavigate: (Screens) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val ingredientViewModel: IngredientViewModel = viewModel()
@@ -40,7 +44,8 @@ fun IngredientScreen(
         is IngredientUiState.Loading -> LoadingScreen()
         is IngredientUiState.Success -> ResultScreen(
             cocktailList = ingredientUiState.cocktailList,
-            ingredient = ingredient
+            ingredient = ingredient,
+            onNavigate = onNavigate
             )
         is IngredientUiState.Error -> ErrorScreen(
             onRetry = { ingredientViewModel.getCocktails(ingredient) }
@@ -52,6 +57,7 @@ fun IngredientScreen(
 fun ResultScreen (
     cocktailList: List<Cocktail>,
     ingredient: String,
+    onNavigate: (Screens) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold { innerPadding ->
@@ -97,37 +103,14 @@ fun ResultScreen (
                         .padding(8.dp)
                 ) {
                     rowItems.forEach { item ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.weight(1f)
-
-                        ) {
-                            GlideImage(
-                                imageModel = { item.strDrinkThumb },
-                                modifier = modifier
-                                    .aspectRatio(1f),
-                                requestOptions = {
-                                    RequestOptions()
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                },
-                                failure = {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_connection_error),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(50.dp)
-                                        )
-                                    }
-                                }
-                            )
-                            Text(
-                                text = item.strDrink,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        CocktailCard(
+                            item,
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable(
+                                    onClick = { onNavigate(Screens.CocktailDetail(item.idDrink)) }
+                                )
+                        )
                     }
                     repeat(2 - rowItems.size) {
                         Box(modifier = Modifier.weight(1f))

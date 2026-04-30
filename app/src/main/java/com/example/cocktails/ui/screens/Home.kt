@@ -15,14 +15,10 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
+import com.example.cocktails.navigation.NavigationViewModel
 import com.example.cocktails.navigation.Screens
 import com.example.cocktails.ui.screens.alcoholicCocktail.AlcoholicCocktailViewModel
 import com.example.cocktails.ui.screens.alcoholicCocktail.AlcoholicCocktailsScreen
@@ -41,7 +37,7 @@ fun Home(
     onNavigate: (Screens) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedTab by remember { mutableIntStateOf(0) }
+    val navigationViewModel: NavigationViewModel = viewModel()
     val tabItems = listOf(
         TabItem(
             name = "Alcoholic",
@@ -57,19 +53,19 @@ fun Home(
     Scaffold(
         bottomBar = {
             TabRow(
-                selectedTabIndex = selectedTab,
+                selectedTabIndex = navigationViewModel.selectedTab,
                 modifier = modifier.navigationBarsPadding()
             ) {
                 tabItems.forEachIndexed { index, item ->
                     Tab(
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index },
+                        selected = navigationViewModel.selectedTab == index,
+                        onClick = { navigationViewModel.selectTab(index) },
                         text = {
                             Text(text = item.name)
                         },
                         icon = {
                             Icon(
-                                imageVector = if (index == selectedTab) {
+                                imageVector = if (index == navigationViewModel.selectedTab) {
                                     item.selectedIcon
                                 } else item.unselectedIcon,
                                 contentDescription = item.name
@@ -81,7 +77,7 @@ fun Home(
         }
     ) { innerPadding ->
         Column(modifier = modifier.padding(innerPadding)) {
-            if (selectedTab == 0) {
+            if (navigationViewModel.selectedTab == 0) {
                 val alcoholicCocktailViewModel: AlcoholicCocktailViewModel = viewModel()
                 AlcoholicCocktailsScreen(
                     alcoholicCocktailUiState = alcoholicCocktailViewModel.alcoholicCocktailUiState,

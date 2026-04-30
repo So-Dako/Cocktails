@@ -10,7 +10,7 @@ object OkHttpClientManager {
 
         return OkHttpClient.Builder()
             .cache(cache)
-            /*.addInterceptor { chain ->
+            .addInterceptor { chain ->
                 var request = chain.request()
                 if (!isNetworkAvailable(context)) {
                     request = request.newBuilder()
@@ -18,7 +18,7 @@ object OkHttpClientManager {
                         .build()
                 }
                 chain.proceed(request)
-            }*/
+            }
             .addNetworkInterceptor { chain ->
                 val response = chain.proceed(chain.request())
                 response.newBuilder()

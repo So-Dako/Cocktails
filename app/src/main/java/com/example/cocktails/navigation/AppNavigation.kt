@@ -1,5 +1,10 @@
 package com.example.cocktails.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -17,10 +22,16 @@ fun AppNavigation(backStack: SnapshotStateList<Screens>) {
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
+        transitionSpec = {
+            slideInVertically { it } togetherWith fadeOut()
+        },
+        popTransitionSpec = {
+            fadeIn() togetherWith slideOutVertically { it }
+        },
         entryProvider = entryProvider {
             entry<Screens.Home> { Home( onNavigate = {key -> backStack.add(key)}) }
             entry<Screens.CocktailDetail> { key ->
-                val cocktailDetailsViewModel: CocktailDetailsViewModel = viewModel()
+                val cocktailDetailsViewModel: CocktailDetailsViewModel = viewModel(key = key.drinkId)
                 LaunchedEffect(key.drinkId) {
                     cocktailDetailsViewModel.getDrinkDetails(key.drinkId)
                 }
@@ -31,12 +42,13 @@ fun AppNavigation(backStack: SnapshotStateList<Screens>) {
                 )
             }
             entry<Screens.IngredientInfo> { key ->
-                val ingredientViewModel: IngredientViewModel = viewModel()
+                val ingredientViewModel: IngredientViewModel = viewModel(key = key.ingredient)
                 LaunchedEffect(key.ingredient) {
                     ingredientViewModel.getCocktails(key.ingredient)
                 }
                 IngredientScreen(
                     ingredientViewModel.ingredientUiState,
+                    onNavigate = {key -> backStack.add(key)},
                     ingredient = key.ingredient
                     )
             }

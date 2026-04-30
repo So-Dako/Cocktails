@@ -2,6 +2,7 @@ package com.example.cocktails.ui.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -23,29 +24,35 @@ fun IngredientCard(
     measure: String,
     modifier: Modifier = Modifier
 ){
-    GlideImage(
-        imageModel = { "https://www.thecocktaildb.com/images/ingredients/$ingredient.png" },
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .aspectRatio(1f),
-        requestOptions = {
-            RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-        },
-        failure = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_connection_error),
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
-                )
+    )
+    {
+        GlideImage(
+            imageModel = { "https://www.thecocktaildb.com/images/ingredients/$ingredient.png" },
+            modifier = Modifier
+                .aspectRatio(1f),
+            requestOptions = {
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            },
+            failure = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_connection_error),
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
             }
-        }
-    )
-    Text(
-        text = "$measure $ingredient",
-        textAlign = TextAlign.Center
-    )
+        )
+        Text(
+            text = "$measure $ingredient",
+            textAlign = TextAlign.Center
+        )
+    }
 }

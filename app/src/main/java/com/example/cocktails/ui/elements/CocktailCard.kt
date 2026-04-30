@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.cocktails.R
 import com.example.cocktails.network.AlcoholicCocktail
+import com.example.cocktails.network.Cocktail
 import com.example.cocktails.network.NonAlcoholicCocktail
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -91,5 +92,40 @@ fun CocktailCard(nonAlcoholicCocktail: NonAlcoholicCocktail, modifier: Modifier 
                 textAlign = TextAlign.Center,
                 modifier = modifier)
         }
+    }
+}
+
+@Composable
+fun CocktailCard(cocktail: Cocktail, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        GlideImage(
+            imageModel = { cocktail.strDrinkThumb },
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
+            requestOptions = {
+                RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            },
+            failure = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_connection_error),
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
+            }
+        )
+        Text(
+            text = cocktail.strDrink,
+            textAlign = TextAlign.Center
+        )
     }
 }
